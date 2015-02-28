@@ -6,13 +6,12 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-public class CE1 {
+public class CE2 {
 	
 	private static final String MESSAGE_SEARCH_FAIL = "Sorry, no items matched the search term.";
 	private static final String MESSAGE_SORTED = "Sorted text alphabetically.";
@@ -145,7 +144,7 @@ public class CE1 {
 		return commandTypeString.equalsIgnoreCase("add");
 	}
 
-	private static void display() {
+	static void display() {
 		displayCounter = 1;
 		if (itemList.size() == 0) {
 			println (String.format(MESSAGE_EMPTY, fileName));
@@ -159,7 +158,7 @@ public class CE1 {
 		}
 	}
 
-	private static void add(String userCommand) {
+	static void add(String userCommand) {
 
 		userCommand = removeFirstWord(userCommand);
 		itemList.add(userCommand);
@@ -169,7 +168,7 @@ public class CE1 {
 
 	}
 
-	private static void delete(String userCommand) {
+	static void delete(String userCommand) {
 			userCommand = removeFirstWord(userCommand);
 			int no = Integer.parseInt(userCommand);
 			no--;
@@ -178,19 +177,19 @@ public class CE1 {
 			println("deleted from "+fileName + ": \""+ text + "\"");
 		}
 	
-	private static void clear() {
+	static void clear() {
 			textFile.delete();
 			createFile(fileName);
 			itemList = new ArrayList<String>();
 			println("all content deleted from " + fileName);
 	}
 	
-	private static void sort() {
+	static void sort() {
 		Collections.sort(itemList);
 		println (MESSAGE_SORTED);
 	}
 	
-	private static void search(String userCommand) {
+	static void search(String userCommand) {
 		displayCounter = 1;
 		userCommand = removeFirstWord(userCommand);
 		if (itemList.size() == 0) {
@@ -226,7 +225,7 @@ public class CE1 {
 		}
 	}
 	
-	private static void loadFileToList () {
+	static void loadFileToList () {
 		try {
 			Scanner f = new Scanner(textFile);
 			if(!f.hasNextLine()){
