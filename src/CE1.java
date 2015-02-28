@@ -8,11 +8,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
 public class CE1 {
 	
+	private static final String MESSAGE_SORTED = "sorted file alphabetically.";
 	private static final String MESSAGE_EMPTY = "%1$s is empty";
 	private static final String MESSAGE_INVALID = "Invalid Command: %1$s";
 	private static final String MESSAGE_WELCOME = "Welcome to textbuddy, %1$s is ready for use";
@@ -34,7 +36,7 @@ public class CE1 {
 
 	// These are the possible command types
 	enum COMMAND_TYPE {
-		ADD, DISPLAY, DELETE, CLEAR, INVALID, EXIT
+		ADD, DISPLAY, DELETE, CLEAR, SORT, INVALID, EXIT
 	};
 
 	public static void main(String[] args) {
@@ -70,6 +72,9 @@ public class CE1 {
 		case CLEAR:
 			clear();
 			break;
+		case SORT:
+			sort();
+			break;
 		case INVALID:
 			System.out.println(String.format(MESSAGE_INVALID_FORMAT, userCommand));
 			break;
@@ -95,6 +100,8 @@ public class CE1 {
 			return COMMAND_TYPE.DELETE;
 		} else if (isClear(commandTypeString)) {
 			return COMMAND_TYPE.CLEAR;
+		} else if (isSort(commandTypeString)) {
+			return COMMAND_TYPE.SORT;
 		} else if (isExit(commandTypeString)) {
 			return COMMAND_TYPE.EXIT;
 		} else {
@@ -118,6 +125,10 @@ public class CE1 {
 		return commandTypeString.equalsIgnoreCase("clear");
 	}
 
+	private static boolean isSort(String commandTypeString) {
+		return commandTypeString.equalsIgnoreCase("sort");
+	}
+	
 	private static boolean isAdd(String commandTypeString) {
 		return commandTypeString.equalsIgnoreCase("add");
 	}
@@ -151,9 +162,6 @@ public class CE1 {
 			println("deleted "+ userCommand +" from "+fileName);
 		}
 	
-	private static void createFile (String fileName ) throws FileNotFoundException, UnsupportedEncodingException {
-		printWriter = new PrintWriter(fileName);
-	}
 	private static void clear() {
 		try { 
 			textFile.delete();
@@ -167,6 +175,14 @@ public class CE1 {
 		}
 	}
 	
+	private static void sort() {
+		Collections.sort(itemList);
+		println (MESSAGE_SORTED);
+	}
+	
+	private static void createFile (String fileName ) throws FileNotFoundException, UnsupportedEncodingException {
+		printWriter = new PrintWriter(fileName);
+	}
 	
 	private static void loadFileToList () {
 		try {
