@@ -36,7 +36,7 @@ public class CE1 {
 
 	// These are the possible command types
 	enum COMMAND_TYPE {
-		ADD, DISPLAY, DELETE, CLEAR, SORT, INVALID, EXIT
+		ADD, DISPLAY, DELETE, CLEAR, SORT, SEARCH, INVALID, EXIT
 	};
 
 	public static void main(String[] args) {
@@ -75,10 +75,15 @@ public class CE1 {
 		case SORT:
 			sort();
 			break;
+		case SEARCH:
+			search(userCommand);
+			break;
 		case INVALID:
 			System.out.println(String.format(MESSAGE_INVALID_FORMAT, userCommand));
 			break;
 		case EXIT:
+			textFile.delete();
+			createFile(fileName);
 			saveListToFile();
 			System.exit(0);
 		default:
@@ -102,7 +107,9 @@ public class CE1 {
 			return COMMAND_TYPE.CLEAR;
 		} else if (isSort(commandTypeString)) {
 			return COMMAND_TYPE.SORT;
-		} else if (isExit(commandTypeString)) {
+		} else if (isSearch(commandTypeString)) {
+			return COMMAND_TYPE.SEARCH;
+		}else if (isExit(commandTypeString)) {
 			return COMMAND_TYPE.EXIT;
 		} else {
 			return COMMAND_TYPE.INVALID;
@@ -127,6 +134,10 @@ public class CE1 {
 
 	private static boolean isSort(String commandTypeString) {
 		return commandTypeString.equalsIgnoreCase("sort");
+	}
+	
+	private static boolean isSearch(String commandTypeString) {
+		return commandTypeString.equalsIgnoreCase("search");
 	}
 	
 	private static boolean isAdd(String commandTypeString) {
@@ -163,16 +174,10 @@ public class CE1 {
 		}
 	
 	private static void clear() {
-		try { 
 			textFile.delete();
 			createFile(fileName);
 			itemList = new ArrayList<String>();
 			println("all content deleted from " + fileName);
-		}
-		catch(Exception e)
-		{
-			System.err.println("Error in clear()");
-		}
 	}
 	
 	private static void sort() {
@@ -180,8 +185,35 @@ public class CE1 {
 		println (MESSAGE_SORTED);
 	}
 	
-	private static void createFile (String fileName ) throws FileNotFoundException, UnsupportedEncodingException {
+	private static void search(String userCommand) {
+		displayCounter = 1;
+		userCommand = removeFirstWord(userCommand);
+		if (itemList.size() == 0) {
+			println (String.format(MESSAGE_EMPTY, fileName));
+		}
+		else{
+			for (String i:itemList){
+				if(isSubstring(userCommand, i)){
+				println("["+displayCounter+"]: "+i);
+				}
+				displayCounter++;
+			}
+			displayCounter = 0; //Reset the counter once function is done
+		}
+	}
+
+	private static boolean isSubstring(String substring, String superstring) {
+		return superstring.toLowerCase().contains(substring.toLowerCase());
+	}
+	
+	private static void createFile (String fileName ) {
+		try {
 		printWriter = new PrintWriter(fileName);
+		}
+		catch(Exception e)
+		{
+			System.err.println("Error in createFile()");
+		}
 	}
 	
 	private static void loadFileToList () {
