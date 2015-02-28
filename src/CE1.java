@@ -14,7 +14,8 @@ import java.util.Scanner;
 
 public class CE1 {
 	
-	private static final String MESSAGE_SORTED = "sorted file alphabetically.";
+	private static final String MESSAGE_SEARCH_FAIL = "Sorry, no items matched the search term.";
+	private static final String MESSAGE_SORTED = "Sorted text alphabetically.";
 	private static final String MESSAGE_EMPTY = "%1$s is empty";
 	private static final String MESSAGE_INVALID = "Invalid Command: %1$s";
 	private static final String MESSAGE_WELCOME = "Welcome to textbuddy, %1$s is ready for use";
@@ -192,11 +193,16 @@ public class CE1 {
 			println (String.format(MESSAGE_EMPTY, fileName));
 		}
 		else{
+			int searchResults = 0;
 			for (String i:itemList){
 				if(isSubstring(userCommand, i)){
 				println("["+displayCounter+"]: "+i);
+				searchResults++;
 				}
 				displayCounter++;
+			}
+			if (searchResults == 0){
+				println(MESSAGE_SEARCH_FAIL);
 			}
 			displayCounter = 0; //Reset the counter once function is done
 		}
