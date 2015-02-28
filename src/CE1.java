@@ -163,6 +163,9 @@ public class CE1 {
 
 		userCommand = removeFirstWord(userCommand);
 		itemList.add(userCommand);
+		
+		println("added to "+fileName + ": \""+ userCommand + "\"");
+		
 
 	}
 
@@ -170,8 +173,9 @@ public class CE1 {
 			userCommand = removeFirstWord(userCommand);
 			int no = Integer.parseInt(userCommand);
 			no--;
+			String text = itemList.get(no);
 			itemList.remove(no);
-			println("deleted "+ userCommand +" from "+fileName);
+			println("deleted from "+fileName + ": \""+ text + "\"");
 		}
 	
 	private static void clear() {
